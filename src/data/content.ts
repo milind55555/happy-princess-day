@@ -101,11 +101,6 @@ export const CONTENT: Content = {
     { id: 'p1', src: '/assets/photos/couple1.jpg', caption: 'Us, together 💕' },
     { id: 'p2', src: '/assets/photos/couple2.jpg', caption: 'My favorite place — next to you' },
     { id: 'p3', src: '/assets/photos/couple3.jpg', caption: 'You & me, always ❤️' },
-    { id: 'p4', src: '/assets/photos/photo1.svg', caption: 'Our Pune internship days' },
-    { id: 'p5', src: '/assets/photos/photo2.svg', caption: 'Moonlit conversations' },
-    { id: 'p6', src: '/assets/photos/photo3.svg', caption: 'Jaaanu being a Cutepie' },
-    { id: 'p7', src: '/assets/photos/photo4.svg', caption: 'First coffee together' },
-    { id: 'p8', src: '/assets/photos/photo5.svg', caption: 'Rose-gold sunsets' },
   ],
   timeline: [
     {
