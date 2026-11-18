@@ -1,131 +1,158 @@
-import { useRef, useState, useEffect } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
-import * as THREE from 'three';
+import { useState, useRef, useEffect } from 'react';
 import { fireConfetti } from '@/utils/confetti';
 import { CONTENT } from '@/data/content';
 
-const HEART_COUNT = 1500;
-
-function heartParametric(t: number) {
-  const x = 16 * Math.pow(Math.sin(t), 3);
-  const y = 13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t);
-  return { x: x * 0.14, y: -y * 0.14, z: (Math.random() - 0.5) * 1.2 };
-}
-
-function HeartPoints({ formed }: { formed: boolean }) {
-  const meshRef = useRef<THREE.Points>(null);
-  const geoRef = useRef<THREE.BufferGeometry>(null);
-  const time = useRef(0);
-
-  const positions = new Float32Array(HEART_COUNT * 3);
-  const targets = new Float32Array(HEART_COUNT * 3);
-  for (let i = 0; i < HEART_COUNT; i++) {
-    const p = heartParametric(Math.random() * Math.PI * 2);
-    targets[i * 3] = p.x;
-    targets[i * 3 + 1] = p.y;
-    targets[i * 3 + 2] = p.z;
-    positions[i * 3] = (Math.random() - 0.5) * 12;
-    positions[i * 3 + 1] = (Math.random() - 0.5) * 12;
-    positions[i * 3 + 2] = (Math.random() - 0.5) * 12;
-  }
-
-  useFrame((_, delta) => {
-    if (!meshRef.current || !geoRef.current) return;
-    time.current += delta;
-    const pos = geoRef.current.attributes.position.array as Float32Array;
-    for (let i = 0; i < HEART_COUNT; i++) {
-      if (!formed) {
-        pos[i * 3] += Math.sin(time.current + i) * 0.01;
-        pos[i * 3 + 1] += Math.cos(time.current + i) * 0.01;
-      } else {
-        pos[i * 3] += (targets[i * 3] - pos[i * 3]) * 0.06;
-        pos[i * 3 + 1] += (targets[i * 3 + 1] - pos[i * 3 + 1]) * 0.06;
-        pos[i * 3 + 2] += (targets[i * 3 + 2] - pos[i * 3 + 2]) * 0.06;
-      }
-    }
-    geoRef.current.attributes.position.needsUpdate = true;
-    meshRef.current.rotation.y = time.current * 0.05;
-    meshRef.current.rotation.x = Math.sin(time.current * 0.5) * 0.2;
-  });
-
-  return (
-    <points ref={meshRef}>
-      <bufferGeometry ref={geoRef} attach="geometry">
-        <bufferAttribute attach="attributes-position" count={HEART_COUNT} itemSize={3} array={positions} />
-      </bufferGeometry>
-      <pointsMaterial size={0.07} color={0xffd6e8} transparent opacity={0.85} sizeAttenuation />
-    </points>
-  );
-}
-
 export default function Finale() {
-  const [formed, setFormed] = useState(false);
+  const [visible, setVisible] = useState(false);
+  const sectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const t = setTimeout(() => setFormed(true), 900);
-    return () => clearTimeout(t);
-  }, []);
-
-  useEffect(() => {
-    fireConfetti();
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          fireConfetti();
+        }
+      },
+      { threshold: 0.2 }
+    );
+    if (sectionRef.current) observer.observe(sectionRef.current);
+    return () => observer.disconnect();
   }, []);
 
   return (
     <section
+      ref={sectionRef}
       id="finale"
-      className="relative min-h-[100vh] w-full bg-twilight text-white flex flex-col items-center justify-center overflow-hidden"
+      className="relative min-h-screen w-full flex flex-col items-center justify-center section-padding py-24 overflow-hidden"
     >
-      <div className="absolute inset-0 z-0">
-        <Canvas camera={{ position: [0, 0, 10], fov: 45 }} gl={{ antialias: true, alpha: true }}>
-          <ambientLight intensity={0.3} />
-          <pointLight position={[5, 5, 5]} intensity={1} color={0xffd6e8} />
-          <HeartPoints formed={formed} />
-        </Canvas>
+      {/* Background effects */}
+      <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-rose-900/15 blur-[160px]" />
+        <div className="absolute top-1/3 left-1/4 w-[300px] h-[300px] rounded-full bg-violet-900/10 blur-[100px]" />
+        <div className="absolute bottom-1/4 right-1/4 w-[250px] h-[250px] rounded-full bg-amber-900/10 blur-[100px]" />
       </div>
 
-      <div className="relative z-20 px-6 text-center max-w-xl">
+      {/* Floating hearts (CSS only) */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
+        {Array.from({ length: 15 }, (_, i) => (
+          <div
+            key={i}
+            className="absolute text-lg sm:text-xl"
+            style={{
+              left: `${Math.random() * 100}%`,
+              animation: `float-up ${Math.random() * 10 + 10}s linear infinite`,
+              animationDelay: `${Math.random() * 10}s`,
+              opacity: 0.15,
+            }}
+          >
+            {i % 3 === 0 ? '💕' : i % 3 === 1 ? '✨' : '💖'}
+          </div>
+        ))}
+      </div>
+
+      {/* Main content */}
+      <div className="relative z-10 text-center max-w-2xl mx-auto">
+        {/* Heart emoji */}
+        <div
+          className="text-7xl sm:text-8xl mb-10"
+          style={{
+            opacity: visible ? 1 : 0,
+            transform: visible ? 'translateY(0) scale(1)' : 'translateY(-20px) scale(0.7)',
+            transition: 'all 1s cubic-bezier(0.16, 1, 0.3, 1)',
+          }}
+        >
+          💖
+        </div>
+
+        {/* Main message */}
         <h1
-          className="text-5xl md:text-7xl font-serif font-bold text-white mb-6 tracking-tight text-shadow"
-          style={{ opacity: formed ? 1 : 0, transform: formed ? 'none' : 'translateY(20px)', transition: 'all 0.8s ease-out' }}
+          className="text-5xl sm:text-6xl md:text-7xl font-serif font-bold gradient-text leading-tight tracking-tight mb-6"
+          style={{
+            opacity: visible ? 1 : 0,
+            transform: visible ? 'translateY(0)' : 'translateY(24px)',
+            transition: 'all 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s',
+          }}
         >
           {CONTENT.finale.message}
         </h1>
-        <p className="text-xl font-script text-rose-gold/90 mb-10 italic text-shadow">
+
+        {/* From */}
+        <p
+          className="text-xl sm:text-2xl font-serif italic text-white/60 mb-4"
+          style={{
+            opacity: visible ? 1 : 0,
+            transform: visible ? 'translateY(0)' : 'translateY(16px)',
+            transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.5s',
+          }}
+        >
           {CONTENT.finale.from}
         </p>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+
+        {/* P.S. */}
+        <p
+          className="text-base text-white/40 font-light mb-14"
+          style={{
+            opacity: visible ? 1 : 0,
+            transform: visible ? 'translateY(0)' : 'translateY(12px)',
+            transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.7s',
+          }}
+        >
+          {CONTENT.finale.ps}
+        </p>
+
+        {/* Action buttons */}
+        <div
+          className="flex flex-col sm:flex-row gap-4 justify-center mb-10"
+          style={{
+            opacity: visible ? 1 : 0,
+            transition: 'opacity 1s ease 1s',
+          }}
+        >
           <button
             onClick={() => {
-              setFormed(false);
               fireConfetti();
-              setTimeout(() => setFormed(true), 600);
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
-            className="px-8 py-4 rounded-full border border-rose-gold bg-rose-gold text-twilight font-serif font-bold text-lg tracking-wider hover:bg-white transition-all shadow-[0_0_25px_rgba(232,180,184,0.6)]"
+            className="group relative px-8 py-4 rounded-full font-serif font-bold text-lg tracking-wider transition-all duration-300 overflow-hidden"
+            style={{
+              background: 'linear-gradient(135deg, #e8b4b8, #f5d98b)',
+              color: '#0f0a1e',
+            }}
           >
-            Replay the magic ✨
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
+            <span className="relative z-10">Replay the magic ✨</span>
           </button>
+
           <button
             onClick={fireConfetti}
-            className="px-8 py-4 rounded-full border border-white/20 bg-white/10 text-white font-serif font-bold text-lg tracking-wider hover:bg-white/20 transition-all backdrop-blur-sm"
+            className="px-8 py-4 rounded-full glass-card font-serif font-bold text-lg text-white/80 hover:text-white hover:bg-white/[0.08] transition-all duration-300"
           >
             Send a hug back 🤗
           </button>
         </div>
-        <div className="mt-10 flex gap-4 justify-center">
+
+        {/* Contact links */}
+        <div
+          className="flex gap-4 justify-center"
+          style={{
+            opacity: visible ? 1 : 0,
+            transition: 'opacity 1s ease 1.2s',
+          }}
+        >
           <a
             href={CONTENT.contact.whatsapp}
             target="_blank"
-            rel="noopener"
-            className="px-6 py-3 rounded-full border border-white/20 bg-white/10 text-white text-sm font-medium hover:bg-white/20 transition-all"
+            rel="noopener noreferrer"
+            className="px-6 py-3 rounded-full glass-card text-white/60 text-sm font-medium hover:text-white hover:bg-white/[0.06] transition-all duration-300"
           >
-            WhatsApp Milind
+            💬 WhatsApp
           </a>
           <a
             href={CONTENT.contact.email}
-            className="px-6 py-3 rounded-full border border-white/20 bg-white/10 text-white text-sm font-medium hover:bg-white/20 transition-all"
+            className="px-6 py-3 rounded-full glass-card text-white/60 text-sm font-medium hover:text-white hover:bg-white/[0.06] transition-all duration-300"
           >
-            Email Milind
+            ✉️ Email
           </a>
         </div>
       </div>

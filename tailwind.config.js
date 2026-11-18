@@ -8,7 +8,8 @@ export default {
   theme: {
     extend: {
       colors: {
-        twilight: '#1a1033',
+        twilight: '#0f0a1e',
+        'twilight-mid': '#1a1033',
         'rose-gold': '#e8b4b8',
         champagne: '#f5d98b',
         lavender: '#c9b6ff',
@@ -22,33 +23,20 @@ export default {
         script: ['"Great Vibes"', '"Dancing Script"', 'cursive'],
       },
       animation: {
-        'float': 'float 6s ease-in-out infinite',
-        'float-slow': 'float 10s ease-in-out infinite',
-        'sparkle': 'sparkle 2s ease-in-out infinite',
+        'float': 'gentle-float 6s ease-in-out infinite',
+        'float-slow': 'gentle-float 10s ease-in-out infinite',
         'pulse-soft': 'pulse-soft 4s ease-in-out infinite',
-        'whoosh': 'whoosh 0.6s cubic-bezier(0.4, 0, 0.2, 1)',
-        'draw': 'draw 1s ease-out forwards',
       },
       keyframes: {
-        float: {
-          '0%, 100%': { transform: 'translateY(0)' },
-          '50%': { transform: 'translateY(-12px)' },
-        },
-        sparkle: {
-          '0%, 100%': { opacity: '0.4', transform: 'scale(1)' },
-          '50%': { opacity: '1', transform: 'scale(1.2)' },
+        'gentle-float': {
+          '0%, 100%': { transform: 'translateY(0) rotate(0deg)' },
+          '25%': { transform: 'translateY(-8px) rotate(1deg)' },
+          '50%': { transform: 'translateY(-16px) rotate(0deg)' },
+          '75%': { transform: 'translateY(-8px) rotate(-1deg)' },
         },
         'pulse-soft': {
           '0%, 100%': { opacity: '0.6', transform: 'scale(1)' },
           '50%': { opacity: '1', transform: 'scale(1.05)' },
-        },
-        whoosh: {
-          '0%': { transform: 'translateX(-40px) scale(0.9)', opacity: '0' },
-          '100%': { transform: 'translateX(0) scale(1)', opacity: '1' },
-        },
-        draw: {
-          '0%': { strokeDasharray: '1000', strokeDashoffset: '1000' },
-          '100%': { strokeDasharray: '1000', strokeDashoffset: '0' },
         },
       },
     },

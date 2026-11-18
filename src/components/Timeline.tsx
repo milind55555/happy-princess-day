@@ -1,99 +1,92 @@
-import { useRef, useEffect } from 'react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useRef, useEffect, useState } from 'react';
 import { CONTENT } from '@/data/content';
 
-gsap.registerPlugin(ScrollTrigger);
-
 export default function Timeline() {
-  const lineRef = useRef<SVGLineElement>(null);
+  const [visible, setVisible] = useState(false);
+  const sectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        lineRef.current!,
-        { strokeDasharray: '1000', strokeDashoffset: '1000' },
-        {
-          strokeDashoffset: 0,
-          duration: 1.5,
-          ease: 'power2.inOut',
-          scrollTrigger: {
-            trigger: lineRef.current!,
-            start: 'top 80%',
-            toggleActions: 'play none none reverse',
-          },
-        }
-      );
-    });
-    return () => ctx.revert();
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) setVisible(true);
+      },
+      { threshold: 0.1 }
+    );
+    if (sectionRef.current) observer.observe(sectionRef.current);
+    return () => observer.disconnect();
   }, []);
 
   return (
-    <section id="timeline" className="relative min-h-[100vh] bg-twilight text-white px-6 pt-20 pb-32">
-      <div className="max-w-4xl mx-auto">
-        <h2 className="text-4xl md:text-6xl font-serif font-bold text-white mb-16 tracking-tight">
-          Timeline of us
-        </h2>
-        <div className="relative">
-          {/* vertical line */}
-          <svg
-            className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-0.5"
-            height="100%"
-            width="100%"
-          >
-            <line
-              ref={lineRef}
-              x1="50%"
-              y1="0"
-              x2="50%"
-              y2="100%"
-              stroke="rose-gold"
-              strokeWidth="2"
-              strokeDasharray="1000"
-              strokeDashoffset="1000"
-              className="transition-all duration-1000 ease-out"
-            />
-            {/* dots */}
-            {CONTENT.timeline.map((e, i) => (
-              <circle
-                key={e.id}
-                cx="50%"
-                cy={((i + 1) / (CONTENT.timeline.length + 1)) * 100}
-                r="4"
-                fill="#ffffff"
-              />
-            ))}
-          </svg>
+    <section
+      ref={sectionRef}
+      id="timeline"
+      className="relative py-24 sm:py-32 section-padding"
+    >
+      {/* Background glow */}
+      <div className="absolute top-1/3 right-0 w-[400px] h-[400px] rounded-full bg-indigo-900/15 blur-[130px] pointer-events-none" />
 
-          {CONTENT.timeline.map((e, i) => {
-            const side = i % 2 === 0 ? 'left' : 'right';
-            return (
+      <div className="max-w-3xl mx-auto relative z-10">
+        {/* Header */}
+        <h2
+          className="text-4xl sm:text-5xl md:text-6xl font-serif font-bold text-white tracking-tight mb-4"
+          style={{
+            opacity: visible ? 1 : 0,
+            transform: visible ? 'translateY(0)' : 'translateY(30px)',
+            transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
+          }}
+        >
+          Our story so far
+        </h2>
+        <p
+          className="text-white/40 text-lg font-light mb-16"
+          style={{
+            opacity: visible ? 1 : 0,
+            transform: visible ? 'translateY(0)' : 'translateY(20px)',
+            transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.15s',
+          }}
+        >
+          Every chapter, a beautiful memory.
+        </p>
+
+        {/* Timeline items */}
+        <div className="relative">
+          {/* Vertical line */}
+          <div className="absolute left-6 sm:left-8 top-0 bottom-0 w-px bg-gradient-to-b from-white/10 via-white/20 to-white/5" />
+
+          {/* Timeline events */}
+          <div className="space-y-12 sm:space-y-16">
+            {CONTENT.timeline.map((event, i) => (
               <div
-                key={e.id}
-                className={`relative mb-20 ${
-                  side === 'left'
-                    ? 'pr-10 text-right items-end flex justify-end'
-                    : 'pl-10 text-left items-start flex justify-start'
-                }`}
+                key={event.id}
+                className="relative pl-16 sm:pl-20"
+                style={{
+                  opacity: visible ? 1 : 0,
+                  transform: visible ? 'translateX(0)' : 'translateX(-30px)',
+                  transition: `all 0.7s cubic-bezier(0.16, 1, 0.3, 1) ${0.3 + i * 0.15}s`,
+                }}
               >
-                <div
-                  className="absolute left-1/2 -translate-x-1/2 top-0 w-3 h-3 rounded-full bg-champagne shadow-[0_0_10px_#f5d98b]"
-                />
-                <div
-                  className={`glass-card w-full max-w-md p-6 ${
-                    side === 'left' ? 'ml-4' : 'mr-4'
-                  }`}
-                >
-                  <div className="flex justify-between items-start mb-2">
-                    <span className="text-rose-gold font-bold text-sm tracking-wider uppercase">{e.year}</span>
-                    <span className="text-white/50 text-xs">•</span>
-                  </div>
-                  <h3 className="text-xl font-serif font-bold text-white mb-2">{e.title}</h3>
-                  <p className="text-white/80 font-light leading-relaxed">{e.body}</p>
+                {/* Dot on the line */}
+                <div className="absolute left-[18px] sm:left-[26px] top-2 w-4 h-4 rounded-full border-2 border-white/30 bg-[#0f0a1e] z-10">
+                  <div className="absolute inset-1 rounded-full bg-white/60" />
+                </div>
+
+                {/* Year badge */}
+                <div className="inline-block px-3 py-1 rounded-full bg-white/[0.06] border border-white/[0.08] text-xs font-mono text-white/50 tracking-wider uppercase mb-3">
+                  {event.emoji} {event.year}
+                </div>
+
+                {/* Card */}
+                <div className="glass-card p-6 sm:p-7">
+                  <h3 className="text-xl sm:text-2xl font-serif font-bold text-white mb-3">
+                    {event.title}
+                  </h3>
+                  <p className="text-white/60 font-light leading-relaxed text-base">
+                    {event.body}
+                  </p>
                 </div>
               </div>
-            );
-          })}
+            ))}
+          </div>
         </div>
       </div>
     </section>

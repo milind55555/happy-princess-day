@@ -11,12 +11,11 @@ export default defineConfig({
   },
   build: {
     outDir: 'dist',
-    sourcemap: true,
+    sourcemap: false,
     rollupOptions: {
       output: {
         manualChunks: {
-          three: ['three', '@react-three/fiber', '@react-three/drei'],
-          ui: ['gsap', 'lenis', 'howler', 'canvas-confetti'],
+          ui: ['gsap', 'howler', 'canvas-confetti'],
         },
       },
     },

@@ -1,99 +1,59 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
-import { useLenis, scrollToTop } from '@/hooks/useLenis';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import LoadingScreen from '@/components/LoadingScreen';
 import EntranceGate from '@/components/EntranceGate';
 import HeroScene from '@/components/HeroScene';
 import WhyPrincess from '@/components/WhyPrincess';
+import PhotoGallery from '@/components/PhotoGallery';
 import Timeline from '@/components/Timeline';
 import InteractiveMoments from '@/components/InteractiveMoments';
 import Finale from '@/components/Finale';
-import NavDots from '@/components/NavDots';
+import NavBar from '@/components/NavBar';
 import MusicControl from '@/components/MusicControl';
-import CustomCursor from '@/components/CustomCursor';
-import { CONTENT } from '@/data/content';
+import StarField from '@/components/StarField';
 
-const SECTION_IDS = ['hero', 'why', 'gallery', 'timeline', 'moments', 'finale'];
+type Stage = 'loading' | 'gate' | 'main';
 
 export default function App() {
-  const [stage, setStage] = useState<'loading' | 'gate' | 'open'>('loading');
-  const [activeId, setActiveId] = useState('hero');
-  const { lenis, scrollTo } = useLenis();
-  const scrollYRef = useRef(0);
+  const [stage, setStage] = useState<Stage>('loading');
 
-  useEffect(() => {
-    if (stage === 'loading') {
-      scrollToTop();
-    }
-  }, [stage]);
-
-  useEffect(() => {
-    if (!lenis) return;
-    const onScroll = () => {
-      scrollYRef.current = window.scrollY;
-      const y = window.scrollY;
-      let active = 'hero';
-      for (const id of SECTION_IDS) {
-        const el = document.getElementById(id);
-        if (el) {
-          const rect = el.getBoundingClientRect();
-          if (rect.top <= 150 && rect.bottom > 150) active = id;
-        }
-      }
-      setActiveId(active);
-    };
-    lenis.on('scroll', onScroll);
-    window.addEventListener('scroll', onScroll, { passive: true });
-    onScroll();
-    return () => {
-      lenis.off('scroll', onScroll);
-      window.removeEventListener('scroll', onScroll);
-    };
-  }, [lenis]);
-
-  const handleEnter = useCallback(() => {
+  const handleLoadingDone = useCallback(() => {
     setStage('gate');
   }, []);
 
-  const handleOpen = useCallback(() => {
-    setStage('open');
-    setTimeout(() => {
-      lenis?.scrollTo(0, { immediate: true });
-    }, 100);
-  }, [lenis]);
-
-  const crownSparkle = useCallback(() => {
-    // handled inside CrownScene + confetti
+  const handleEnter = useCallback(() => {
+    setStage('main');
+    // Scroll to top when entering main
+    window.scrollTo({ top: 0, behavior: 'auto' });
   }, []);
 
   return (
-    <div className="relative min-h-screen bg-twilight text-white">
-      <CustomCursor />
-      <MusicControl src="/assets/music/song.mp3" />
+    <div className="relative min-h-screen bg-[#0f0a1e] text-white overflow-x-hidden">
+      {/* Global star field — lightweight CSS only */}
+      <StarField />
 
-      {stage === 'loading' && (
-        <LoadingScreen onFinish={handleEnter} />
+      {/* Music control — always visible after loading */}
+      {stage !== 'loading' && <MusicControl src="/assets/music/song.mp3" />}
+
+      {/* Loading screen */}
+      {stage === 'loading' && <LoadingScreen onFinish={handleLoadingDone} />}
+
+      {/* Entrance gate */}
+      {stage === 'gate' && <EntranceGate onEnter={handleEnter} />}
+
+      {/* Main content */}
+      {stage === 'main' && (
+        <>
+          <NavBar />
+          <main>
+            <HeroScene />
+            <WhyPrincess />
+            <PhotoGallery />
+            <Timeline />
+            <InteractiveMoments />
+            <Finale />
+          </main>
+        </>
       )}
-
-      {stage === 'gate' && (
-        <EntranceGate onEnter={handleOpen} />
-      )}
-
-      {stage === 'open' && (
-        <main className="relative z-10 min-h-screen">
-          <HeroScene
-            herName={CONTENT.her}
-            himName={CONTENT.him}
-            nickname={CONTENT.nickname}
-            onCrownSparkle={crownSparkle}
-          />
-          <WhyPrincess />
-          <Timeline />
-          <InteractiveMoments />
-          <Finale />
-        </main>
-      )}
-
-      {stage === 'open' && <NavDots activeId={activeId} />}
     </div>
   );
 }

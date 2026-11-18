@@ -1,68 +1,92 @@
-import { useEffect, useRef, useState } from 'react';
-import { ArrowRight } from 'lucide-react';
+import { useState } from 'react';
 
 export default function EntranceGate({ onEnter }: { onEnter: () => void }) {
-  const [opened, setOpened] = useState(false);
-  const gateRef = useRef<HTMLDivElement>(null);
-  const lightRef = useRef<HTMLDivElement>(null);
+  const [opening, setOpening] = useState(false);
 
-  useEffect(() => {
-    if (!opened) return;
-    const tl = setTimeout(() => {
-      lightRef.current?.classList.add('opacity-100', 'scale-110');
-    }, 700);
-    return () => clearTimeout(tl);
-  }, [opened]);
+  const handleClick = () => {
+    if (opening) return;
+    setOpening(true);
+    setTimeout(onEnter, 1200);
+  };
 
   return (
-    <div className="relative w-full min-h-[100vh] flex items-center justify-center bg-[url('https://images.unsplash.com/photo-1462331940025-496dfbfc7564?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center">
-      <div className="absolute inset-0 bg-gradient-to-t from-twilight/95 via-twilight/60 to-transparent" />
-      <div className="relative z-10 flex flex-col items-center justify-center h-full w-full p-6 text-center">
-        <h1 className="text-4xl md:text-6xl font-serif text-white tracking-tight leading-tight text-shadow mb-6">
-          Welcome to the kingdom,<br />
-          <span className="text-rose-gold italic font-serif">Jaaanu</span> 👑
+    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-[#0f0a1e]">
+      {/* Background gradient */}
+      <div className="absolute inset-0 bg-gradient-to-t from-[#0f0a1e] via-[#1a1033]/80 to-[#0f0a1e]" />
+
+      {/* Ambient glow */}
+      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-violet-800/20 blur-[150px]" />
+
+      {/* Content */}
+      <div
+        className={`relative z-10 flex flex-col items-center text-center px-6 transition-all duration-1000 ${
+          opening ? 'opacity-0 scale-110' : 'opacity-100 scale-100'
+        }`}
+      >
+        {/* Crown */}
+        <div className="text-6xl mb-8 animate-[gentle-float_4s_ease-in-out_infinite]">👑</div>
+
+        {/* Title */}
+        <h1 className="text-4xl sm:text-5xl md:text-6xl font-serif font-bold text-white leading-tight tracking-tight mb-4">
+          Welcome to your kingdom,
         </h1>
-        <p className="text-lg text-white/80 max-w-md mx-auto mb-10 font-light">
-          Tap the gate to step into a night made just for you.
+        <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif italic gradient-text mb-6">
+          Jaaanu
+        </h2>
+
+        {/* Subtitle */}
+        <p className="text-lg text-white/50 max-w-md mx-auto mb-12 font-light leading-relaxed">
+          Behind this door lies a night made entirely for you.
+          <br />
+          Every word, every sparkle, every heartbeat — it's all yours.
         </p>
-        <div className="relative w-full max-w-xs">
-          <div
-            ref={gateRef}
-            className="relative mx-auto w-full max-w-xs h-64 mt-4 transition-all duration-1000 ease-out"
-          >
-            {/* Door frame */}
-            <div className="absolute inset-0 border-2 border-rose-gold/40 rounded-3xl bg-black/30 backdrop-blur-sm shadow-[0_0_40px_rgba(232,180,184,0.2)]" />
+
+        {/* Gate visual */}
+        <div className="relative w-72 h-48 mb-10">
+          {/* Door frame */}
+          <div className="absolute inset-0 rounded-t-[80px] border border-white/[0.08] bg-white/[0.02] backdrop-blur-sm overflow-hidden">
             {/* Left door */}
             <div
-              className={`absolute top-0 bottom-0 left-0 w-1/2 border-t-2 border-b-2 border-l-2 border-rose-gold/60 bg-black/40 backdrop-blur rounded-l-3xl transition-transform duration-1000 ease-out origin-left ${
-                opened ? '-translate-x-1/2 scale-x-0 opacity-0' : ''
+              className={`absolute top-0 bottom-0 left-0 w-1/2 bg-gradient-to-r from-white/[0.03] to-white/[0.06] border-r border-white/[0.06] transition-all duration-1000 ease-[cubic-bezier(0.4,0,0.2,1)] origin-left ${
+                opening ? '-translate-x-full opacity-0' : ''
               }`}
-            />
+            >
+              {/* Door handle */}
+              <div className="absolute right-3 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-amber-400/60 shadow-[0_0_8px_rgba(245,217,139,0.4)]" />
+            </div>
             {/* Right door */}
             <div
-              className={`absolute top-0 bottom-0 right-0 w-1/2 border-t-2 border-b-2 border-r-2 border-rose-gold/60 bg-black/40 backdrop-blur rounded-r-3xl transition-transform duration-1000 ease-out origin-right ${
-                opened ? 'translate-x-1/2 scale-x-0 opacity-0' : ''
+              className={`absolute top-0 bottom-0 right-0 w-1/2 bg-gradient-to-l from-white/[0.03] to-white/[0.06] border-l border-white/[0.06] transition-all duration-1000 ease-[cubic-bezier(0.4,0,0.2,1)] origin-right ${
+                opening ? 'translate-x-full opacity-0' : ''
               }`}
-            />
-            {/* Door handle */}
-            <div className="absolute right-1/4 top-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-champagne shadow-[0_0_8px_#f5d98b]" />
+            >
+              <div className="absolute left-3 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-amber-400/60 shadow-[0_0_8px_rgba(245,217,139,0.4)]" />
+            </div>
           </div>
-          {/* Light flood */}
+
+          {/* Light flood when opening */}
           <div
-            ref={lightRef}
-            className="absolute inset-0 bg-gradient-to-t from-white/60 via-white/20 to-transparent opacity-0 scale-95 transition-all duration-1000 pointer-events-none"
+            className={`absolute inset-0 rounded-t-[80px] bg-gradient-to-t from-white/40 via-white/10 to-transparent transition-all duration-1000 ${
+              opening ? 'opacity-100 scale-105' : 'opacity-0 scale-95'
+            }`}
           />
         </div>
+
+        {/* Open button */}
         <button
-          onClick={() => {
-            setOpened(true);
-            setTimeout(onEnter, 1100);
+          onClick={handleClick}
+          disabled={opening}
+          className="group relative px-10 py-4 rounded-full font-serif font-bold text-lg tracking-wider transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed overflow-hidden"
+          style={{
+            background: 'linear-gradient(135deg, #e8b4b8, #f5d98b)',
+            color: '#0f0a1e',
           }}
-          disabled={opened}
-          className="mt-10 px-8 py-4 rounded-full border border-rose-gold bg-rose-gold text-twilight font-serif font-bold text-xl uppercase tracking-wider hover:bg-white transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_0_20px_rgba(232,180,184,0.6)]"
-          aria-label="Open the royal gate"
         >
-          Open <ArrowRight className="w-5 h-5 inline ml-2" /> 👑
+          {/* Shimmer effect */}
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
+          <span className="relative z-10">
+            Open the Royal Gate {opening ? '✨' : '→'}
+          </span>
         </button>
       </div>
     </div>

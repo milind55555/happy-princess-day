@@ -1,25 +1,68 @@
-import { Volume2, VolumeX } from 'lucide-react';
-import { useMusic } from '@/hooks/useMusic';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { Howl } from 'howler';
 
-interface MusicControlProps {
-  src: string;
-}
+export default function MusicControl({ src }: { src: string }) {
+  const [playing, setPlaying] = useState(false);
+  const musicRef = useRef<Howl | null>(null);
 
-export default function MusicControl({ src }: MusicControlProps) {
-  const { isPlaying, muted, toggle } = useMusic(src);
+  useEffect(() => {
+    musicRef.current = new Howl({
+      src: [src],
+      loop: true,
+      volume: 0.4,
+      html5: true,
+      preload: true,
+      onloaderror: () => {
+        console.warn('Music file not found — add /assets/music/song.mp3');
+      },
+    });
+
+    return () => {
+      musicRef.current?.stop();
+      musicRef.current?.unload();
+    };
+  }, [src]);
+
+  const toggle = useCallback(() => {
+    if (!musicRef.current) return;
+    if (playing) {
+      musicRef.current.pause();
+      setPlaying(false);
+    } else {
+      try {
+        musicRef.current.play();
+        setPlaying(true);
+      } catch {
+        // autoplay may fail
+      }
+    }
+  }, [playing]);
 
   return (
     <button
       onClick={toggle}
-      aria-label={muted ? 'Unmute music' : 'Mute music'}
-      className="fixed top-4 right-4 z-50 w-12 h-12 rounded-full border border-white/20 bg-black/40 backdrop-blur-md flex items-center justify-center transition-all hover:bg-white/10 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-rose-gold"
+      aria-label={playing ? 'Pause music' : 'Play music'}
+      className={`fixed top-4 right-4 z-[60] w-11 h-11 rounded-full flex items-center justify-center transition-all duration-300 ${
+        playing
+          ? 'glass-card border-white/[0.15] bg-white/[0.08]'
+          : 'glass-card border-white/[0.08]'
+      } hover:bg-white/[0.1] hover:scale-105 active:scale-95`}
     >
-      {muted || !isPlaying ? (
-        <VolumeX className="w-5 h-5 text-white/80" />
+      {playing ? (
+        // Sound on icon (3 animated bars)
+        <div className="flex items-end gap-[3px] h-4">
+          <div className="w-[3px] bg-white/80 rounded-full animate-[shimmer_0.6s_ease-in-out_infinite]" style={{ height: '60%' }} />
+          <div className="w-[3px] bg-white/80 rounded-full animate-[shimmer_0.6s_ease-in-out_infinite_0.15s]" style={{ height: '100%' }} />
+          <div className="w-[3px] bg-white/80 rounded-full animate-[shimmer_0.6s_ease-in-out_infinite_0.3s]" style={{ height: '40%' }} />
+        </div>
       ) : (
-        <Volume2 className="w-5 h-5 text-white/90" />
+        // Sound off icon
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white/60">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+          <line x1="23" y1="9" x2="17" y2="15" />
+          <line x1="17" y1="9" x2="23" y2="15" />
+        </svg>
       )}
-      <span className="absolute -top-2 -right-2 w-2 h-2 rounded-full bg-rose-gold animate-pulse" aria-hidden="true" />
     </button>
   );
 }

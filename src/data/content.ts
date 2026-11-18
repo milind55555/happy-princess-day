@@ -2,7 +2,7 @@ export type Coupon = {
   id: string;
   title: string;
   subtitle: string;
-  icon: 'gift' | 'heart' | 'film' | 'hug';
+  emoji: string;
 };
 
 export type TimelineEvent = {
@@ -10,31 +10,24 @@ export type TimelineEvent = {
   year: string;
   title: string;
   body: string;
+  emoji: string;
 };
 
 export type Reason = {
   id: string;
   text: string;
-  icon: 'heart' | 'star' | 'rose' | 'moon' | 'key' | 'sparkle';
-  color: string;
+  emoji: string;
+  gradient: string;
 };
 
 export interface Content {
   her: string;
   him: string;
   nickname: string;
-  metStory: string;
-  colors: {
-    twilight: string;
-    roseGold: string;
-    champagne: string;
-    lavender: string;
-    blush: string;
-  };
   hero: {
     title: string;
-    sub: string;
-    crownClick: string;
+    subtitle: string;
+    tagline: string;
   };
   reasons: Reason[];
   photos: {
@@ -49,6 +42,7 @@ export interface Content {
   finale: {
     message: string;
     from: string;
+    ps: string;
   };
   contact: {
     whatsapp: string;
@@ -60,91 +54,110 @@ export const CONTENT: Content = {
   her: 'Anjali',
   him: 'Milind',
   nickname: 'Jaaanu',
-  metStory:
-    "We met during an internship in Pune — two strangers in the same office, and somehow you became my favorite part of every day.",
-  colors: {
-    twilight: '#1a1033',
-    roseGold: '#e8b4b8',
-    champagne: '#f5d98b',
-    lavender: '#c9b6ff',
-    blush: '#ffd6e8',
-  },
   hero: {
-    title: 'Happy Princess Day, Jaaanu 👑',
-    sub: 'Because every princess deserves a day made just for her.',
-    crownClick: 'Sparkle burst!',
+    title: 'Happy Princess Day',
+    subtitle: 'Jaaanu 👑',
+    tagline: 'A little kingdom I built, just for the queen of my heart.',
   },
   reasons: [
     {
       id: 'r1',
-      text: 'The way your eyes light up when you talk about the moon.',
-      icon: 'moon',
-      color: '#c9b6ff',
+      text: 'The way your eyes light up when you talk about the moon — like you carry starlight inside you.',
+      emoji: '🌙',
+      gradient: 'from-violet-500/20 to-indigo-500/20',
     },
     {
       id: 'r2',
-      text: 'You make Pune feel like home, just by being in it.',
-      icon: 'heart',
-      color: '#e8b4b8',
+      text: 'You make Pune feel like home, just by being in it. Every street becomes our story.',
+      emoji: '🏡',
+      gradient: 'from-rose-500/20 to-pink-500/20',
     },
     {
       id: 'r3',
-      text: 'My Jaaanu is a Cutepie — and that\'s a scientifically proven fact.',
-      icon: 'sparkle',
-      color: '#f5d98b',
+      text: 'My Jaaanu is a Cutepie — and that\'s a scientifically proven, universally acknowledged fact.',
+      emoji: '✨',
+      gradient: 'from-amber-500/20 to-yellow-500/20',
     },
     {
       id: 'r4',
-      text: 'You turn ordinary moments into royal memories.',
-      icon: 'rose',
-      color: '#d45087',
+      text: 'You turn ordinary chai breaks into royal memories. Every moment with you becomes golden.',
+      emoji: '🌹',
+      gradient: 'from-red-500/20 to-rose-500/20',
     },
     {
       id: 'r5',
-      text: 'Your laugh is the crown jewel of my day.',
-      icon: 'star',
-      color: '#c9a227',
+      text: 'Your laugh is the crown jewel of my day. I\'d do anything just to hear it one more time.',
+      emoji: '💎',
+      gradient: 'from-cyan-500/20 to-blue-500/20',
     },
     {
       id: 'r6',
-      text: 'Because you are, and always will be, my princess.',
-      icon: 'key',
-      color: '#ffd6e8',
+      text: 'Because you are, and always will be, my princess. My Jaaanu. My forever.',
+      emoji: '👑',
+      gradient: 'from-amber-500/20 to-orange-500/20',
     },
   ],
   photos: [
-    { id: 'p1', src: '/assets/photos/photo1.svg', caption: 'Our Pune internship days' },
-    { id: 'p2', src: '/assets/photos/photo2.svg', caption: 'Moonlit conversations' },
-    { id: 'p3', src: '/assets/photos/photo3.svg', caption: 'Jaaanu being a Cutepie' },
-    { id: 'p4', src: '/assets/photos/photo4.svg', caption: 'First coffee together' },
-    { id: 'p5', src: '/assets/photos/photo5.svg', caption: 'Rose-gold sunsets' },
-    { id: 'p6', src: '/assets/photos/photo6.svg', caption: 'Lazy Sunday mornings' },
-    { id: 'p7', src: '/assets/photos/photo7.svg', caption: 'Stargazing in the city' },
-    { id: 'p8', src: '/assets/photos/photo8.svg', caption: 'Us, always' },
+    { id: 'p1', src: '/assets/photos/couple1.jpg', caption: 'Us, together 💕' },
+    { id: 'p2', src: '/assets/photos/couple2.jpg', caption: 'My favorite place — next to you' },
+    { id: 'p3', src: '/assets/photos/couple3.jpg', caption: 'You & me, always ❤️' },
+    { id: 'p4', src: '/assets/photos/photo1.svg', caption: 'Our Pune internship days' },
+    { id: 'p5', src: '/assets/photos/photo2.svg', caption: 'Moonlit conversations' },
+    { id: 'p6', src: '/assets/photos/photo3.svg', caption: 'Jaaanu being a Cutepie' },
+    { id: 'p7', src: '/assets/photos/photo4.svg', caption: 'First coffee together' },
+    { id: 'p8', src: '/assets/photos/photo5.svg', caption: 'Rose-gold sunsets' },
   ],
   timeline: [
-    { id: 't1', year: '2025', title: 'The day we met', body: 'An internship in Pune. I walked in, and you were already my favorite reason to stay.' },
-    { id: 't2', year: '2025', title: 'First coffee', body: 'Nervous smiles, long conversations, and a rose-gold sunset we didn\'t want to end.' },
-    { id: 't3', year: '2025', title: 'Inside jokes born', body: '"My Jaaanu is a Cutepie" became our anthem, and the moon became our witness.' },
-    { id: 't4', year: '2026', title: 'Today', body: 'Happy Princess Day, Jaaanu. You rule my heart completely.' },
+    {
+      id: 't1',
+      year: '2025',
+      title: 'The Day Everything Changed',
+      body: 'An internship in Pune. I walked through that office door, and there you were — my favorite reason to show up every single morning.',
+      emoji: '💫',
+    },
+    {
+      id: 't2',
+      year: '2025',
+      title: 'First Coffee, First Butterflies',
+      body: 'Nervous smiles across the table, your laugh filling the café, and a rose-gold sunset we watched together — neither of us wanted that evening to end.',
+      emoji: '☕',
+    },
+    {
+      id: 't3',
+      year: '2025',
+      title: 'When "Us" Became Official',
+      body: '"My Jaaanu is a Cutepie" became our anthem. The moon became our witness. Inside jokes became our secret language.',
+      emoji: '🌙',
+    },
+    {
+      id: 't4',
+      year: '2026',
+      title: 'Today — Your Kingdom Awaits',
+      body: 'Happy Princess Day, Jaaanu. From strangers in Pune to the most beautiful story I know. You rule my heart, completely and forever.',
+      emoji: '👑',
+    },
   ],
   wishMessages: [
-    'May every wish you whisper to the stars come true.',
-    'I wish you endless joy, in every season.',
-    'May your days be as soft as rose petals and as bright as the moon.',
-    'I wish you always feel as cherished as you make me feel.',
+    'May every wish you whisper to the stars come true, one by one, like petals falling softly.',
+    'I wish you endless joy — in every season, every sunrise, every quiet moment.',
+    'May your days be as soft as rose petals and as bright as the full moon on a clear night.',
+    'I wish you always feel as cherished and adored as you make me feel every single day.',
+    'May the universe conspire to give you everything your heart desires — you deserve all of it.',
   ],
   letter:
-    'My dearest Jaaanu,\n\nThere is no ordinary way to say this, so I made a whole kingdom instead. You are the rose-gold in my twilight, the moon in my night, and the princess who turned my world into a fairytale.\n\nThank you for being my Cutepie, my favorite conversation, and my home in Pune and beyond. Every day with you feels like a royal occasion.\n\nI love you, endlessly.\n\n— Milind',
+    'My dearest Jaaanu,\n\nThere is no ordinary way to say what you mean to me, so I built you a whole kingdom instead.\n\nYou are the rose-gold in my twilight sky, the moon that lights up my darkest nights, and the princess who turned my ordinary world into the most beautiful fairytale.\n\nRemember our first days in Pune? Two strangers who somehow knew they\'d become each other\'s favorite person. Every coffee, every sunset, every late-night conversation — they all led to this. To us.\n\nThank you for being my Cutepie, my favorite person to call, my home in Pune and everywhere beyond. Every single day with you feels like a royal occasion.\n\nYou make me want to be better, dream bigger, and love harder. And I promise — I will spend every day making you feel like the princess you truly are.\n\nI love you, Jaaanu. Endlessly. Completely. Forever.\n\n— Your Milind 💖',
   coupons: [
-    { id: 'c1', title: 'One free dinner date', subtitle: 'Your pick of cuisine, my treat.', icon: 'gift' },
-    { id: 'c2', title: 'Unlimited hugs', subtitle: 'Valid forever, no expiry.', icon: 'heart' },
-    { id: 'c3', title: 'Movie night, your pick', subtitle: 'Rom-com, thriller, or moon-gazing.', icon: 'film' },
-    { id: 'c4', title: 'A handwritten letter', subtitle: 'Whenever you need one.', icon: 'hug' },
+    { id: 'c1', title: 'Royal Dinner Date', subtitle: 'Your pick of cuisine, your pick of place. My treat, always.', emoji: '🍽️' },
+    { id: 'c2', title: 'Unlimited Hugs Pass', subtitle: 'Valid forever. No expiry date. Redeemable anywhere, anytime.', emoji: '🤗' },
+    { id: 'c3', title: 'Movie Night Coupon', subtitle: 'Rom-com, thriller, or just moon-gazing on the terrace. Your call.', emoji: '🎬' },
+    { id: 'c4', title: 'Handwritten Love Letter', subtitle: 'Whenever your heart needs one. Just say the word.', emoji: '💌' },
+    { id: 'c5', title: 'Surprise Adventure Day', subtitle: 'A whole day planned by me, just for you. No questions asked.', emoji: '🗺️' },
+    { id: 'c6', title: 'Midnight Ice Cream Run', subtitle: 'Because sometimes all you need is ice cream at 2 AM. I\'ll drive.', emoji: '🍦' },
   ],
   finale: {
-    message: 'I love you, Anjali. Happy Princess Day 💖',
-    from: 'Forever yours, Milind',
+    message: 'I love you, Anjali',
+    from: 'Forever & always yours, Milind',
+    ps: 'P.S. — You\'re not just my princess. You\'re my entire kingdom. 💖',
   },
   contact: {
     whatsapp: 'https://wa.me/919322073055',
