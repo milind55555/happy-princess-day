@@ -1,0 +1,91 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --twilight: #1a1033;
+    --rose-gold: #e8b4b8;
+    --champagne: #f5d98b;
+    --lavender: #c9b6ff;
+    --blush: #ffd6e8;
+    --rose: #d45087;
+    --gold: #c9a227;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-twilight text-white selection:bg-rose-gold selection:text-twilight;
+    overflow-x: hidden;
+  }
+  #root {
+    min-height: 100vh;
+    isolation: isolate;
+  }
+  *[data-lenis-prevent] {
+    overscroll-behavior: contain;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply relative rounded-2xl p-6 border border-white/10 bg-white/5 backdrop-blur-md shadow-[0_8px_32px_rgba(0,0,0,0.4)];
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  }
+  .glass-border {
+    position: relative;
+    overflow: hidden;
+  }
+  .glass-border::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    padding: 1px;
+    background: linear-gradient(135deg, rgba(232,180,184,0.6), rgba(201,162,39,0.6), rgba(201,182,255,0.4));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: destination-out;
+    mask-composite: exclude;
+    pointer-events: none;
+    border-radius: inherit;
+  }
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+@layer utilities {
+  .text-shadow {
+    text-shadow: 0 2px 12px rgba(0,0,0,0.55);
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .gradient-text {
+    background: linear-gradient(135deg, #ffffff 0%, #e8b4b8 40%, #c9b6ff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .gold-shimmer {
+    position: relative;
+    overflow: hidden;
+  }
+  .gold-shimmer::after {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%; right: -50%; bottom: -50%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    transform: rotate(25deg);
+    animation: shimmer 3s linear infinite;
+  }
+  @keyframes shimmer {
+    0% { transform: translateX(-100%) rotate(25deg); }
+    100% { transform: translateX(300%) rotate(25deg); }
+  }
+}
