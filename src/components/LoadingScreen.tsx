@@ -5,38 +5,46 @@ export default function LoadingScreen({ onFinish }: { onFinish: () => void }) {
   const [fadeOut, setFadeOut] = useState(false);
 
   useEffect(() => {
-    let frame = 0;
-    const target = 100;
-    const speed = 1.8;
-    let raf: number;
+    const startTime = performance.now();
+    const duration = 1400; // 1.4 seconds total loading time
+    let animationFrameId: number;
+    let finished = false;
 
-    const animate = () => {
-      frame++;
-      // Ease-out progress curve for a natural feel
-      const next = Math.min(target, progress + speed * (1 - progress / target) + 0.5);
-      setProgress((p) => {
-        const val = Math.min(target, p + speed * (1 - p / target) + 0.5);
-        if (val >= target) {
-          setTimeout(() => setFadeOut(true), 300);
-          setTimeout(() => onFinish(), 1000);
-          return target;
-        }
-        return val;
-      });
-      if (frame < 80) {
-        raf = requestAnimationFrame(animate);
+    const tick = (now: number) => {
+      const elapsed = now - startTime;
+      const ratio = Math.min(elapsed / duration, 1);
+      // easeOutCubic curve
+      const easedProgress = Math.min(100, Math.round((1 - Math.pow(1 - ratio, 3)) * 100));
+
+      setProgress(easedProgress);
+
+      if (ratio < 1) {
+        animationFrameId = requestAnimationFrame(tick);
+      } else if (!finished) {
+        finished = true;
+        setFadeOut(true);
+        setTimeout(() => {
+          onFinish();
+        }, 500);
       }
     };
 
-    raf = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(raf);
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    animationFrameId = requestAnimationFrame(tick);
+
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+    };
+  }, [onFinish]);
 
   return (
     <div
-      className={`fixed inset-0 z-[200] flex flex-col items-center justify-center bg-[#0f0a1e] transition-opacity duration-700 ${
+      className={`fixed inset-0 z-[200] flex flex-col items-center justify-center bg-[#0f0a1e] transition-opacity duration-500 ${
         fadeOut ? 'opacity-0 pointer-events-none' : 'opacity-100'
       }`}
+      onClick={() => {
+        setFadeOut(true);
+        setTimeout(onFinish, 200);
+      }}
     >
       {/* Crown emoji with pulse */}
       <div className="relative mb-10">
@@ -48,7 +56,7 @@ export default function LoadingScreen({ onFinish }: { onFinish: () => void }) {
       </div>
 
       {/* Loading text */}
-      <p className="text-lg font-serif text-white/70 tracking-[0.2em] mb-8">
+      <p className="text-lg font-serif text-white/70 tracking-[0.2em] mb-8 text-center px-4">
         Preparing something royal for you,{' '}
         <span className="text-rose-gold font-serif italic text-white/90">Jaaanu</span>…
       </p>
@@ -56,7 +64,7 @@ export default function LoadingScreen({ onFinish }: { onFinish: () => void }) {
       {/* Progress bar */}
       <div className="w-64 h-[3px] bg-white/10 rounded-full overflow-hidden">
         <div
-          className="h-full rounded-full transition-all duration-200 ease-out"
+          className="h-full rounded-full transition-all duration-75 ease-out"
           style={{
             width: `${progress}%`,
             background: 'linear-gradient(90deg, #e8b4b8, #f5d98b, #c9b6ff)',
@@ -65,9 +73,13 @@ export default function LoadingScreen({ onFinish }: { onFinish: () => void }) {
       </div>
 
       {/* Progress percentage */}
-      <p className="mt-4 text-sm text-white/30 font-mono tabular-nums">
-        {Math.round(progress)}%
+      <p className="mt-4 text-sm text-white/40 font-mono tabular-nums">
+        {progress}%
       </p>
+
+      <span className="mt-8 text-xs text-white/20 tracking-wider">
+        (Tap anywhere to skip)
+      </span>
     </div>
   );
 }
