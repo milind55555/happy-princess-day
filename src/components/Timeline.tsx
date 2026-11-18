@@ -22,8 +22,9 @@ export default function Timeline() {
       id="timeline"
       className="relative py-24 sm:py-32 section-padding"
     >
-      {/* Background glow */}
-      <div className="absolute top-1/3 right-0 w-[400px] h-[400px] rounded-full bg-indigo-900/15 blur-[130px] pointer-events-none" />
+      {/* Background glow in radiant rose & wine */}
+      <div className="absolute top-1/3 right-0 w-[500px] h-[500px] rounded-full bg-crimson/15 blur-[150px] pointer-events-none" />
+      <div className="absolute bottom-1/4 left-0 w-[400px] h-[400px] rounded-full bg-rose-red/15 blur-[140px] pointer-events-none" />
 
       <div className="max-w-3xl mx-auto relative z-10">
         {/* Header */}
@@ -35,23 +36,23 @@ export default function Timeline() {
             transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
           }}
         >
-          Our story so far
+          Our story so far 📖
         </h2>
         <p
-          className="text-white/40 text-lg font-light mb-16"
+          className="text-rose-pink/70 text-lg font-light mb-16"
           style={{
             opacity: visible ? 1 : 0,
             transform: visible ? 'translateY(0)' : 'translateY(20px)',
             transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.15s',
           }}
         >
-          Every chapter, a beautiful memory.
+          Every chapter with you is my favorite love story.
         </p>
 
         {/* Timeline items */}
         <div className="relative">
-          {/* Vertical line */}
-          <div className="absolute left-6 sm:left-8 top-0 bottom-0 w-px bg-gradient-to-b from-white/10 via-white/20 to-white/5" />
+          {/* Vertical glowing rose-red line */}
+          <div className="absolute left-6 sm:left-8 top-0 bottom-0 w-[2px] bg-gradient-to-b from-rose-bright via-rose-red to-ruby shadow-[0_0_12px_rgba(255,0,84,0.4)]" />
 
           {/* Timeline events */}
           <div className="space-y-12 sm:space-y-16">
@@ -65,22 +66,22 @@ export default function Timeline() {
                   transition: `all 0.7s cubic-bezier(0.16, 1, 0.3, 1) ${0.3 + i * 0.15}s`,
                 }}
               >
-                {/* Dot on the line */}
-                <div className="absolute left-[18px] sm:left-[26px] top-2 w-4 h-4 rounded-full border-2 border-white/30 bg-[#0f0a1e] z-10">
-                  <div className="absolute inset-1 rounded-full bg-white/60" />
+                {/* Glowing ruby dot on the line */}
+                <div className="absolute left-[17px] sm:left-[25px] top-2 w-5 h-5 rounded-full border-2 border-rose-bright bg-[#13030b] z-10 shadow-[0_0_12px_#ff0054] flex items-center justify-center">
+                  <div className="w-2 h-2 rounded-full bg-rose-red animate-pulse" />
                 </div>
 
                 {/* Year badge */}
-                <div className="inline-block px-3 py-1 rounded-full bg-white/[0.06] border border-white/[0.08] text-xs font-mono text-white/50 tracking-wider uppercase mb-3">
+                <div className="inline-block px-3.5 py-1 rounded-full bg-rose-red/15 border border-rose-pink/30 text-xs font-mono text-rose-pink tracking-wider uppercase mb-3 shadow-[0_0_10px_rgba(255,0,84,0.15)]">
                   {event.emoji} {event.year}
                 </div>
 
                 {/* Card */}
-                <div className="glass-card p-6 sm:p-7">
+                <div className="glass-card-hover p-6 sm:p-7">
                   <h3 className="text-xl sm:text-2xl font-serif font-bold text-white mb-3">
                     {event.title}
                   </h3>
-                  <p className="text-white/60 font-light leading-relaxed text-base">
+                  <p className="text-white/80 font-light leading-relaxed text-base">
                     {event.body}
                   </p>
                 </div>

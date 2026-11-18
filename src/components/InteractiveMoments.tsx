@@ -71,9 +71,9 @@ export default function InteractiveMoments() {
       id="moments"
       className="relative py-24 sm:py-32 section-padding"
     >
-      {/* Background glows */}
-      <div className="absolute top-[20%] left-[10%] w-[350px] h-[350px] rounded-full bg-rose-900/10 blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-[20%] right-[10%] w-[300px] h-[300px] rounded-full bg-violet-900/15 blur-[120px] pointer-events-none" />
+      {/* Background glows in romantic pink-red */}
+      <div className="absolute top-[20%] left-[10%] w-[450px] h-[450px] rounded-full bg-rose-red/15 blur-[150px] pointer-events-none" />
+      <div className="absolute bottom-[20%] right-[10%] w-[450px] h-[450px] rounded-full bg-crimson/15 blur-[150px] pointer-events-none" />
 
       <div className="max-w-4xl mx-auto relative z-10">
         {/* Section title */}
@@ -88,14 +88,14 @@ export default function InteractiveMoments() {
           Royal moments ✨
         </h2>
         <p
-          className="text-white/40 text-lg font-light text-center mb-20"
+          className="text-rose-pink/70 text-lg font-light text-center mb-20"
           style={{
             opacity: visible ? 1 : 0,
             transform: visible ? 'translateY(0)' : 'translateY(20px)',
             transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.15s',
           }}
         >
-          Tap, play, and discover little surprises made for you.
+          Tap, play, and discover romantic surprises made just for you.
         </p>
 
         {/* ═══ WISH UPON A STAR ═══ */}
@@ -110,32 +110,32 @@ export default function InteractiveMoments() {
           <h3 className="text-2xl font-serif text-white mb-3 text-center">
             Make a wish 🌠
           </h3>
-          <p className="text-white/40 text-sm text-center mb-8">
-            Tap the star and let the universe listen.
+          <p className="text-rose-pink/60 text-sm text-center mb-8">
+            Tap the star and let the universe bring you joy.
           </p>
 
           <div className="flex justify-center">
             <button
               onClick={makeWish}
-              className="group relative w-20 h-20 rounded-full glass-card flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95"
+              className="group relative w-20 h-20 rounded-full glass-card-hover flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 shadow-[0_0_25px_rgba(255,0,84,0.35)]"
               aria-label="Make a wish"
             >
               <span className="text-4xl group-hover:animate-[shimmer_1s_ease-in-out]">🌟</span>
               {/* Glow ring */}
-              <div className="absolute inset-0 rounded-full border border-amber-400/20 animate-[pulse-glow_3s_ease-in-out_infinite]" />
+              <div className="absolute inset-0 rounded-full border border-rose-bright/40 animate-[pulse-glow_3s_ease-in-out_infinite]" />
             </button>
           </div>
 
           {wish && (
             <div
-              className="mt-8 glass-card p-8 text-center max-w-lg mx-auto"
+              className="mt-8 glass-card p-8 text-center max-w-lg mx-auto border-rose-pink/30 shadow-[0_0_30px_rgba(255,0,84,0.2)]"
               style={{ animation: 'fade-in-up 0.6s ease-out' }}
             >
-              <p className="text-xl font-serif italic gradient-text-gold leading-relaxed">
+              <p className="text-xl font-serif italic gradient-text leading-relaxed">
                 "{wish}"
               </p>
-              <p className="text-white/40 text-sm mt-4">
-                The sky fills with lanterns for you, Jaaanu. ✨
+              <p className="text-rose-pink/60 text-sm mt-4">
+                The sky fills with lanterns and roses for you, Jaaanu. ✨🌹
               </p>
             </div>
           )}
@@ -153,8 +153,8 @@ export default function InteractiveMoments() {
           <h3 className="text-2xl font-serif text-white mb-3 text-center">
             The royal letter 💌
           </h3>
-          <p className="text-white/40 text-sm text-center mb-8">
-            A letter from my heart to yours.
+          <p className="text-rose-pink/60 text-sm text-center mb-8">
+            A love letter written straight from my heart.
           </p>
 
           {!letterOpen ? (
@@ -164,26 +164,27 @@ export default function InteractiveMoments() {
                   setLetterOpen(true);
                   setLetterChars(0);
                 }}
-                className="group glass-card-hover px-8 py-4 rounded-full font-serif text-lg text-white/80 hover:text-white transition-colors"
+                className="btn-royal text-lg px-8 py-4 flex items-center gap-2"
               >
-                <span className="mr-2">✉️</span> Open the royal letter
+                <span>✉️</span>
+                <span>Open the Royal Letter</span>
               </button>
             </div>
           ) : (
             <div
-              className="glass-card p-8 sm:p-10 max-w-xl mx-auto relative"
+              className="glass-card p-8 sm:p-10 max-w-xl mx-auto relative border-rose-pink/30 shadow-[0_0_40px_rgba(255,0,84,0.25)]"
               style={{ animation: 'scale-in 0.5s ease-out' }}
             >
-              {/* Seal */}
-              <div className="absolute -top-5 left-1/2 -translate-x-1/2 w-10 h-10 rounded-full bg-gradient-to-br from-rose-400 to-rose-600 flex items-center justify-center shadow-lg">
-                <span className="text-white text-sm">💖</span>
+              {/* Wax seal */}
+              <div className="absolute -top-5 left-1/2 -translate-x-1/2 w-11 h-11 rounded-full bg-gradient-to-br from-rose-red via-crimson to-ruby flex items-center justify-center shadow-[0_0_15px_rgba(255,0,84,0.6)] border border-rose-bright/50">
+                <span className="text-white text-base">💖</span>
               </div>
 
               {/* Letter body */}
-              <div className="font-serif text-white/80 leading-relaxed text-base sm:text-lg whitespace-pre-line mt-4">
+              <div className="font-serif text-white/95 leading-relaxed text-base sm:text-lg whitespace-pre-line mt-4">
                 {CONTENT.letter.slice(0, letterChars)}
                 {letterChars < CONTENT.letter.length && (
-                  <span className="inline-block w-0.5 h-5 bg-white/60 ml-0.5 animate-[typewriter-cursor_0.8s_ease-in-out_infinite]" />
+                  <span className="inline-block w-0.5 h-5 bg-rose-bright ml-0.5 animate-[typewriter-cursor_0.8s_ease-in-out_infinite]" />
                 )}
               </div>
             </div>
@@ -201,8 +202,8 @@ export default function InteractiveMoments() {
           <h3 className="text-2xl font-serif text-white mb-3 text-center">
             Royal coupons 🎫
           </h3>
-          <p className="text-white/40 text-sm text-center mb-8">
-            Tap to redeem. Valid forever. Because you deserve it.
+          <p className="text-rose-pink/60 text-sm text-center mb-8">
+            Tap to redeem. Valid forever. Because you deserve every royal treat.
           </p>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -212,7 +213,7 @@ export default function InteractiveMoments() {
                 onClick={() => toggleCoupon(coupon.id)}
                 className={`glass-card-hover p-6 text-left group transition-all duration-500 ${
                   flipped.has(coupon.id)
-                    ? 'border-amber-500/20 bg-amber-500/[0.04]'
+                    ? 'border-rose-bright/50 bg-rose-red/20 shadow-[0_0_25px_rgba(255,0,84,0.3)]'
                     : ''
                 }`}
                 style={{
@@ -232,17 +233,17 @@ export default function InteractiveMoments() {
                 </h4>
 
                 {/* Subtitle */}
-                <p className="text-white/50 text-sm font-light leading-relaxed">
+                <p className="text-rose-pink/70 text-sm font-light leading-relaxed">
                   {coupon.subtitle}
                 </p>
 
                 {/* Redeemed badge */}
                 {flipped.has(coupon.id) && (
                   <div
-                    className="mt-4 inline-block px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-300/80 text-xs font-medium"
+                    className="mt-4 inline-block px-3 py-1 rounded-full bg-rose-red/25 border border-rose-bright/40 text-white text-xs font-medium shadow-[0_0_10px_rgba(255,0,84,0.4)]"
                     style={{ animation: 'scale-in 0.3s ease-out' }}
                   >
-                    ✨ Redeemed with love
+                    ✨ Redeemed with love 💖
                   </div>
                 )}
               </button>

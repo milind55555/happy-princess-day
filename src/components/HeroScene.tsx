@@ -16,27 +16,28 @@ export default function HeroScene() {
       id="hero"
       className="relative min-h-screen w-full flex flex-col items-center justify-center section-padding overflow-hidden"
     >
-      {/* Background effects */}
+      {/* Background glow effects */}
       <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
-        {/* Radial glow */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-violet-800/15 blur-[150px]" />
-        <div className="absolute top-1/3 left-1/3 w-[300px] h-[300px] rounded-full bg-rose-800/10 blur-[100px]" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[650px] rounded-full bg-rose-red/20 blur-[160px]" />
+        <div className="absolute top-1/4 left-1/4 w-[350px] h-[350px] rounded-full bg-crimson/25 blur-[120px]" />
+        <div className="absolute bottom-1/4 right-1/4 w-[350px] h-[350px] rounded-full bg-rose-bright/20 blur-[130px]" />
       </div>
 
-      {/* Floating particles */}
+      {/* Floating romantic particles */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
-        {Array.from({ length: 12 }, (_, i) => (
+        {Array.from({ length: 16 }, (_, i) => (
           <div
             key={i}
             className="absolute rounded-full"
             style={{
-              width: `${Math.random() * 4 + 2}px`,
-              height: `${Math.random() * 4 + 2}px`,
+              width: `${Math.random() * 5 + 2}px`,
+              height: `${Math.random() * 5 + 2}px`,
               left: `${Math.random() * 100}%`,
-              background: i % 3 === 0 ? '#e8b4b8' : i % 3 === 1 ? '#f5d98b' : '#c9b6ff',
+              background: i % 4 === 0 ? '#ff0054' : i % 4 === 1 ? '#ff758f' : i % 4 === 2 ? '#ff4d6d' : '#ffe5ec',
+              boxShadow: '0 0 10px rgba(255, 0, 84, 0.6)',
               animation: `float-up ${Math.random() * 8 + 8}s linear infinite`,
-              animationDelay: `${Math.random() * 10}s`,
-              opacity: 0.4,
+              animationDelay: `${Math.random() * 8}s`,
+              opacity: 0.65,
             }}
           />
         ))}
@@ -44,16 +45,21 @@ export default function HeroScene() {
 
       {/* Main content */}
       <div className="relative z-10 text-center max-w-3xl mx-auto">
-        {/* Crown */}
-        <div
-          className="text-6xl sm:text-7xl mb-8 inline-block"
-          style={{
-            opacity: revealed ? 1 : 0,
-            transform: revealed ? 'translateY(0) scale(1)' : 'translateY(-20px) scale(0.8)',
-            transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
-          }}
-        >
-          👑
+        {/* Crown with glowing halo */}
+        <div className="relative inline-block mb-8">
+          <div
+            className="text-6xl sm:text-7xl lg:text-8xl inline-block"
+            style={{
+              opacity: revealed ? 1 : 0,
+              transform: revealed ? 'translateY(0) scale(1)' : 'translateY(-20px) scale(0.8)',
+              transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
+            }}
+          >
+            👑
+          </div>
+          <div className="absolute inset-0 flex items-center justify-center -z-10">
+            <div className="w-24 h-24 rounded-full bg-rose-red/35 blur-xl animate-pulse" />
+          </div>
         </div>
 
         {/* Title */}
@@ -73,9 +79,9 @@ export default function HeroScene() {
           ))}
         </h1>
 
-        {/* Subtitle — nickname */}
+        {/* Subtitle — nickname in radiant pink-red */}
         <h2
-          className="text-4xl sm:text-5xl md:text-6xl font-serif italic gradient-text-gold mb-8"
+          className="text-4xl sm:text-5xl md:text-6xl font-serif italic gradient-text mb-8"
           style={{
             opacity: revealed ? 1 : 0,
             transform: revealed ? 'translateY(0)' : 'translateY(16px)',
@@ -87,7 +93,7 @@ export default function HeroScene() {
 
         {/* Tagline */}
         <p
-          className="text-lg sm:text-xl text-white/50 max-w-lg mx-auto font-light leading-relaxed"
+          className="text-lg sm:text-xl text-rose-pink/70 max-w-lg mx-auto font-light leading-relaxed"
           style={{
             opacity: revealed ? 1 : 0,
             transform: revealed ? 'translateY(0)' : 'translateY(12px)',
@@ -97,7 +103,7 @@ export default function HeroScene() {
           {CONTENT.hero.tagline}
         </p>
 
-        {/* Scroll indicator */}
+        {/* Scroll indicator with rosy glow */}
         <div
           className="mt-16 flex flex-col items-center gap-2"
           style={{
@@ -105,8 +111,8 @@ export default function HeroScene() {
             transition: 'opacity 1s ease 2s',
           }}
         >
-          <span className="text-white/30 text-sm font-light tracking-widest uppercase">Scroll down</span>
-          <div className="w-px h-10 bg-gradient-to-b from-white/30 to-transparent animate-pulse" />
+          <span className="text-rose-pink/50 text-xs font-light tracking-[0.25em] uppercase">Scroll to explore</span>
+          <div className="w-px h-10 bg-gradient-to-b from-rose-bright via-crimson to-transparent animate-pulse shadow-[0_0_8px_#ff0054]" />
         </div>
       </div>
     </section>

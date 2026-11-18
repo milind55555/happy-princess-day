@@ -14,7 +14,7 @@ export function fireConfetti() {
       ...defaults,
       particleCount,
       origin: { x: 0.5, y: 0.6 },
-      colors: ['#e8b4b8', '#f5d98b', '#c9b6ff', '#ffd6e8', '#ffffff'],
+      colors: ['#ff0054', '#ff4d6d', '#ff758f', '#c9184a', '#ffe5ec', '#fed7aa', '#ffffff'],
     });
   }, 250);
 }

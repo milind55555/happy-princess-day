@@ -22,8 +22,8 @@ export default function WhyPrincess() {
       id="why"
       className="relative py-24 sm:py-32 section-padding"
     >
-      {/* Background glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-rose-900/10 blur-[150px] pointer-events-none" />
+      {/* Background glow in radiant rose & ruby */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-rose-red/15 blur-[160px] pointer-events-none" />
 
       <div className="max-w-6xl mx-auto relative z-10">
         {/* Header */}
@@ -36,17 +36,17 @@ export default function WhyPrincess() {
               transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
             }}
           >
-            Why you're my princess
+            Why you're my princess 🌹
           </h2>
           <p
-            className="mt-4 text-white/40 text-lg font-light"
+            className="mt-4 text-rose-pink/70 text-lg font-light"
             style={{
               opacity: visible ? 1 : 0,
               transform: visible ? 'translateY(0)' : 'translateY(20px)',
               transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.15s',
             }}
           >
-            Six reasons, though there are millions more.
+            Six reasons from the heart, though a lifetime isn't enough to list them all.
           </p>
         </div>
 
@@ -62,18 +62,21 @@ export default function WhyPrincess() {
                 transition: `all 0.7s cubic-bezier(0.16, 1, 0.3, 1) ${0.1 + i * 0.1}s`,
               }}
             >
-              {/* Emoji icon */}
-              <div className="text-4xl mb-5 group-hover:scale-110 transition-transform duration-300">
-                {reason.emoji}
+              {/* Emoji icon with rosy halo */}
+              <div className="relative mb-6">
+                <div className="text-4xl group-hover:scale-110 transition-transform duration-300">
+                  {reason.emoji}
+                </div>
+                <div className="absolute inset-0 -z-10 rounded-full bg-rose-bright/20 blur-md opacity-0 group-hover:opacity-100 transition-opacity" />
               </div>
 
               {/* Reason text */}
-              <p className="text-white/80 font-serif text-lg leading-relaxed font-light">
+              <p className="text-white/90 font-serif text-lg leading-relaxed font-light">
                 {reason.text}
               </p>
 
-              {/* Subtle gradient at bottom */}
-              <div className={`absolute bottom-0 left-0 right-0 h-1 rounded-b-3xl bg-gradient-to-r ${reason.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
+              {/* Glowing bottom line on hover */}
+              <div className="absolute bottom-0 left-0 right-0 h-1 rounded-b-3xl bg-gradient-to-r from-rose-bright via-rose-red to-crimson opacity-0 group-hover:opacity-100 transition-opacity duration-500 shadow-[0_0_12px_#ff0054]" />
             </div>
           ))}
         </div>

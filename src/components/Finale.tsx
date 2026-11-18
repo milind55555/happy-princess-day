@@ -26,43 +26,48 @@ export default function Finale() {
       id="finale"
       className="relative min-h-screen w-full flex flex-col items-center justify-center section-padding py-24 overflow-hidden"
     >
-      {/* Background effects */}
+      {/* Background radiant pink-red glow */}
       <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-rose-900/15 blur-[160px]" />
-        <div className="absolute top-1/3 left-1/4 w-[300px] h-[300px] rounded-full bg-violet-900/10 blur-[100px]" />
-        <div className="absolute bottom-1/4 right-1/4 w-[250px] h-[250px] rounded-full bg-amber-900/10 blur-[100px]" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full bg-rose-red/20 blur-[170px]" />
+        <div className="absolute top-1/3 left-1/4 w-[400px] h-[400px] rounded-full bg-crimson/25 blur-[130px]" />
+        <div className="absolute bottom-1/4 right-1/4 w-[350px] h-[350px] rounded-full bg-rose-bright/20 blur-[120px]" />
       </div>
 
       {/* Floating hearts (CSS only) */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
-        {Array.from({ length: 15 }, (_, i) => (
+        {Array.from({ length: 18 }, (_, i) => (
           <div
             key={i}
-            className="absolute text-lg sm:text-xl"
+            className="absolute text-xl sm:text-2xl"
             style={{
               left: `${Math.random() * 100}%`,
-              animation: `float-up ${Math.random() * 10 + 10}s linear infinite`,
+              animation: `float-up ${Math.random() * 10 + 9}s linear infinite`,
               animationDelay: `${Math.random() * 10}s`,
-              opacity: 0.15,
+              opacity: 0.25,
             }}
           >
-            {i % 3 === 0 ? '💕' : i % 3 === 1 ? '✨' : '💖'}
+            {i % 4 === 0 ? '💖' : i % 4 === 1 ? '🌹' : i % 4 === 2 ? '💕' : '✨'}
           </div>
         ))}
       </div>
 
       {/* Main content */}
       <div className="relative z-10 text-center max-w-2xl mx-auto">
-        {/* Heart emoji */}
-        <div
-          className="text-7xl sm:text-8xl mb-10"
-          style={{
-            opacity: visible ? 1 : 0,
-            transform: visible ? 'translateY(0) scale(1)' : 'translateY(-20px) scale(0.7)',
-            transition: 'all 1s cubic-bezier(0.16, 1, 0.3, 1)',
-          }}
-        >
-          💖
+        {/* Heart emoji with ruby aura */}
+        <div className="relative inline-block mb-10">
+          <div
+            className="text-7xl sm:text-8xl lg:text-9xl"
+            style={{
+              opacity: visible ? 1 : 0,
+              transform: visible ? 'translateY(0) scale(1)' : 'translateY(-20px) scale(0.7)',
+              transition: 'all 1s cubic-bezier(0.16, 1, 0.3, 1)',
+            }}
+          >
+            💖
+          </div>
+          <div className="absolute inset-0 -z-10 flex items-center justify-center">
+            <div className="w-32 h-32 rounded-full bg-rose-bright/40 blur-2xl animate-pulse" />
+          </div>
         </div>
 
         {/* Main message */}
@@ -79,7 +84,7 @@ export default function Finale() {
 
         {/* From */}
         <p
-          className="text-xl sm:text-2xl font-serif italic text-white/60 mb-4"
+          className="text-xl sm:text-2xl font-serif italic text-rose-pink mb-4"
           style={{
             opacity: visible ? 1 : 0,
             transform: visible ? 'translateY(0)' : 'translateY(16px)',
@@ -91,7 +96,7 @@ export default function Finale() {
 
         {/* P.S. */}
         <p
-          className="text-base text-white/40 font-light mb-14"
+          className="text-base text-rose-pink/70 font-light mb-14"
           style={{
             opacity: visible ? 1 : 0,
             transform: visible ? 'translateY(0)' : 'translateY(12px)',
@@ -114,19 +119,15 @@ export default function Finale() {
               fireConfetti();
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
-            className="group relative px-8 py-4 rounded-full font-serif font-bold text-lg tracking-wider transition-all duration-300 overflow-hidden"
-            style={{
-              background: 'linear-gradient(135deg, #e8b4b8, #f5d98b)',
-              color: '#0f0a1e',
-            }}
+            className="btn-royal text-lg px-8 py-4 flex items-center justify-center gap-2"
           >
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
-            <span className="relative z-10">Replay the magic ✨</span>
+            <span>Replay the Magic</span>
+            <span>🌹✨</span>
           </button>
 
           <button
             onClick={fireConfetti}
-            className="px-8 py-4 rounded-full glass-card font-serif font-bold text-lg text-white/80 hover:text-white hover:bg-white/[0.08] transition-all duration-300"
+            className="px-8 py-4 rounded-full glass-card-hover font-serif font-bold text-lg text-white border-rose-pink/30 hover:border-rose-bright shadow-[0_0_20px_rgba(255,0,84,0.25)]"
           >
             Send a hug back 🤗
           </button>
@@ -144,15 +145,15 @@ export default function Finale() {
             href={CONTENT.contact.whatsapp}
             target="_blank"
             rel="noopener noreferrer"
-            className="px-6 py-3 rounded-full glass-card text-white/60 text-sm font-medium hover:text-white hover:bg-white/[0.06] transition-all duration-300"
+            className="px-6 py-3 rounded-full glass-card-hover text-rose-pink text-sm font-medium hover:text-white border-rose-pink/20 hover:border-rose-bright"
           >
-            💬 WhatsApp
+            💬 WhatsApp Milind
           </a>
           <a
             href={CONTENT.contact.email}
-            className="px-6 py-3 rounded-full glass-card text-white/60 text-sm font-medium hover:text-white hover:bg-white/[0.06] transition-all duration-300"
+            className="px-6 py-3 rounded-full glass-card-hover text-rose-pink text-sm font-medium hover:text-white border-rose-pink/20 hover:border-rose-bright"
           >
-            ✉️ Email
+            ✉️ Email Milind
           </a>
         </div>
       </div>
